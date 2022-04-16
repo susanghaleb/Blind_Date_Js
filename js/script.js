@@ -56,25 +56,44 @@ window.addEventListener('load', function() {
         var selected = genderField.selectedIndex;
         var gender = genderField.options[selected].value;
         console.log(gender);
+        function handleChange(event){
+            console.log(event.target.value)
+
+
         
-        var resultsHTML = '';
-        var numUsers = users.length;
-        
-        for(var i = 0; i < numUsers; i++) {
-            
-            if (gender == 'A' || gender == users[i].gender) {             
-                if (hobby == '' || hobby == users[i].hobby) {
-                    resultsHTML += '<div class="person-row">\
-                                   <img src="images/' + users[i].avatar + '" />\
+        }
+
+        function renderResult(avatar, name, hobby){
+            return(
+                '<div class="person-row">\
+                                   <img src="images/' + avatar + '" />\
                                    <div class="person-info">\
-                                   <div>' + users[i].name + '</div>\
-                                   <div>' + users[i].hobby + '</div></div>\
-                                    <button>Add as friend</button></div>';
+                                   <div>' + name + '</div>\
+                                   <div>' + hobby + '</div></div>\
+                                    <button>Add as friend</button></div>'
+
+            )
+        }
+        function filterUsers(){
+            var resultsHTML = '';
+            var numUsers = users.length;
+            
+            for(var i = 0; i < numUsers; i++) {
+                
+                if (gender == 'A' || gender == users[i].gender) {             
+                    if (hobby == '' || hobby == users[i].hobby) {
+                        resultsHTML += renderResult(users[i].avatar, users[i].name, users[i].hobby)
+                    }
                 }
             }
+        return resultsHTML;    
+            
         }
+        genderField.addEventListener('change',handleChange)
+       
+     
         
-        results.innerHTML = resultsHTML;  
+        results.innerHTML = filterUsers();  
     };
     
     var results = document.getElementById('results');
